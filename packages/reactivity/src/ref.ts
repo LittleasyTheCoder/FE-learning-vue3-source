@@ -1,7 +1,7 @@
 import { createDep } from './dep';
-import { hasChanged, isObject } from '../../../oldpackages/packages/shared/src/index';
 import { reactive } from './reactive';
 import { isTracking, trackEffects, triggerEffects } from './effect';
+import { hasChanged, isObject } from '../../shared/src/index';
 
 export class RefImpl {
     private _rawValue: any;

@@ -1,5 +1,5 @@
 
-import { isObject } from '../../../oldpackages/packages/shared/src/index';
+import { isObject } from '../../shared/src/index';
 import { track, trigger } from './effect';
 import { reactive, ReactiveFlags, reactiveMap, readonly, readonlyMap, shallowReadonlyMap } from './reactive';
 
