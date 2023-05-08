@@ -1,4 +1,15 @@
-import { reactive } from "./reactive"
-
-const proxy1 = reactive({"name": "Alice"})
-console.log(`proxy1: ${JSON.stringify(proxy1)}`)
+export {
+    reactive,
+    readonly,
+    shallowReadonly,
+    isReadonly,
+    isReactive,
+    isProxy,
+  } from "./reactive";
+  
+  export { ref, proxyRefs, unRef, isRef } from "./ref";
+  
+  export { effect, stop, ReactiveEffect } from "./effect";
+  
+  export { computed } from "./computed";
+  
