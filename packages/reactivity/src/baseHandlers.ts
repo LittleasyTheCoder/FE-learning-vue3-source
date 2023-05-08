@@ -1,5 +1,6 @@
-import { isObject } from '../../shared/src';
-import { track } from './effect';
+
+import { isObject } from '../../../oldpackages/packages/shared/src/index';
+import { track, trigger } from './effect';
 import { reactive, ReactiveFlags, reactiveMap, readonly, readonlyMap, shallowReadonlyMap } from './reactive';
 
 const get = createGetter()
@@ -9,10 +10,13 @@ const shallowReadonlyGet = createGetter(true, true)
 
 function createGetter(isReadonly = false, shallow = false) {
     return function get(target, key, receiver) {
+
+        // 这部分代码用于./reactive.ts中的toRaw方法，返回原始对象
         const isExistInReactiveMap = () => key === ReactiveFlags.RAW && receiver === reactiveMap.get(target)
         const isExistInReadonlyMap = () => key === ReactiveFlags.RAW && receiver === readonlyMap.get(target)
         const isExistInShallowReadonlyMap = () => key === ReactiveFlags.RAW && receiver === shallowReadonlyMap.get(target)
 
+        // 这部分的代码用于判断某个对象是不是reactive或者readonly，详见./reactive中的方法isReactive()等
         if (key === ReactiveFlags.IS_REACTIVE) {
             return !isReadonly
         } else if (key === ReactiveFlags.IS_READONLY) {
@@ -20,6 +24,7 @@ function createGetter(isReadonly = false, shallow = false) {
         } else if (isExistInReactiveMap() || isExistInReadonlyMap() || isExistInShallowReadonlyMap()) {
             return target
         }
+        // 这部分的代码用于判断某个对象是不是reactive或者readonly，详见./reactive中的方法isReactive()等
         const res = Reflect.get(target, key, receiver)
 
         if (!isReadonly) {
@@ -36,7 +41,11 @@ function createGetter(isReadonly = false, shallow = false) {
     }
 }
 function createSetter() {
-
+    return function (target, key, value, receiver) {
+        const result = Reflect.set(target, key, value, receiver)
+        trigger(target, "set", key)
+        return result
+    }
 }
 export const mutableHandlers = {
     get,
