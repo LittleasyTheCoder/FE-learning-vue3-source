@@ -8,7 +8,7 @@ const targetMap = new WeakMap();
 export function isTracking() {
     return shouldTrack && activeEffect !== undefined
 }
-// @ts-ignore
+
 export function track(target, type, key) {
     if (!isTracking()) return
     console.log(`触发track --> target: ${target}, type: ${type}, key: ${key}`)
